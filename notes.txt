@@ -47,3 +47,6 @@ handle_client(self, data):
 	portforward.Proxy.dataReceived(self, data)
 
 reactorListenTCP(localport, portforward.ProxyFactory(desthost, destport)
+
+
+http://blog.ziade.org/2010/09/30/twisted-rocks/

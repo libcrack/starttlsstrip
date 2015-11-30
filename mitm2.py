@@ -1,10 +1,9 @@
 #!/usr/bin/python
 import sys
-import thread
+import time
 try:
     from twisted.protocols import portforward
-    from twisted.internet import reactor
-    from twisted.internet import protocol
+    from twisted.internet import reactor, protocol
 except ImportError:
     print "[!] Error importing module: Please install the 'twisted' package from http://twistedmatrix.com/"
     sys.exit(1)
@@ -15,12 +14,14 @@ except ImportError:
     sys.exit(1)
 
 
-SMTP_PCAP_FILTER = "tcp and port 25"
-FTP_PCAP_FILTER = "tcp and port 21"
-TELNET_PCAP_FILTER = "tcp and port 23"
-POP3_PCAP_FILTER = "tcp and port 110"
-IMAP_PCAP_FILTER = "tcp and port 143"
-SUPPORTED_PROTOCOLS_PCAP_FILTER = "tcp and (port 21 or port 22 or port 25 or port 110 or port 143)"
+SMTP_PCAP_FILTER = "tcp and dst port 25"
+FTP_PCAP_FILTER = "tcp and dst port 21"
+TELNET_PCAP_FILTER = "tcp and dst port 23"
+POP3_PCAP_FILTER = "tcp and dst port 110"
+IMAP_PCAP_FILTER = "tcp and dst port 143"
+SUPPORTED_PROTOCOLS_PCAP_FILTER = "tcp and (dst port 21 or dst port 22 or dst port 25 or dst port 110 or dst port 143)"
+
+HTTP_PCAP_FILTER = "tcp and dst port 80"
 
 LOCALPORT = 8080
 REMOTEPORT = 80
@@ -77,9 +78,13 @@ def sniffer_packet_handler(packet):
 
     start_proxy(LOCALPORT, destination_ip, destination_port, protocol)
 
+
 def connection_lost(self, reason):
-    shutdown_proxy()
-    return
+    if VERBOSE:
+        print "[*] Shutting down proxy..."
+    if reactor.running:
+        reactor.stop()
+        #reactor.crash()
 
 def start_proxy(local_port, remote_host, remote_port, protocol):
     if protocol == "SMTP":
@@ -92,31 +97,26 @@ def start_proxy(local_port, remote_host, remote_port, protocol):
         portforward.ProxyServer.dataReceived = server_receive_data_generic
         portforward.ProxyClient.dataReceived = client_receive_data_generic
 
-    #portforward.ProxyServer.connectionLost = connection_lost
+    portforward.ProxyServer.connectionLost = connection_lost
     #portforward.ProxyClient.connectionLost = connection_lost
 
     reactor.listenTCP(local_port, portforward.ProxyFactory(remote_host, remote_port))
     reactor.run()
 
-def shutdown_proxy():
-    if VERBOSE:
-        print "[*] Shutting down proxy..."
-
 
 def start_sniffer(interface, pcap_filter):
     try:
-        sniffer = sniff(iface=interface, filter=pcap_filter, prn=sniffer_packet_handler, count=10)
+        sniffer = sniff(iface=interface, filter=pcap_filter, prn=sniffer_packet_handler, count=1000)
     except Exception as err:
         print "[!] Error: " + str(err)
 
 
 def main():
     interface = "wlan0"
-    pcap_filter = "tcp and port 25"
+    pcap_filter = HTTP_PCAP_FILTER
     if VERBOSE:
         print "[*] Starting sniffer with PCAP filter: '" + pcap_filter + "'"
-    #thread.start_new_thread(start_sniffer, (pcap_filter,))
-    #start_proxy(LOCALPORT, REMOTEHOST, REMOTEPORT)
+    
     start_sniffer(interface, pcap_filter)
 
 if __name__ == '__main__':
