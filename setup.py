@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
-# Author: borja@libcrack.so
+# Author: devnull@libcrack.so
 # Date: Wed Jan 28 16:35:57 CET 2015
 
 import re
@@ -25,13 +25,13 @@ VERSION = read('VERSION').strip()
 DESCRIPTION = 'SSL strip  implementation supporting StartTLS.'
 KEYWORDS = 'starttls strip sniff mitm'
 AUTHOR = 'JCF & BRC'
-AUTHOR_EMAIL = 'borja@libcrack.so'
-URL = 'https://www.github.com/juliocesarfort/starttlsstrip'
+AUTHOR_EMAIL = 'devnull@libcrack.so'
+URL = 'https://www.github.com/borjiviri/starttlsstrip'
 LICENSE = read('LICENSE')
 #PACKAGES = find_packages(exclude=['tests', 'tests.*'])
 PACKAGES = [NAME]
 PACKAGE_DATA = {NAME: ['data/*'],}
-PACKAGE_DIR = {NAME: 'src'}
+PACKAGE_DIR = {NAME: '.'}
 INSTALL_REQUIRES = [
     x.replace(
         '-',
