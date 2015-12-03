@@ -1,6 +1,8 @@
-#!/usr/bin/python
+#!/usr/bin/python2
+
 import sys
 import time
+
 try:
     from twisted.protocols import portforward
     from twisted.internet import reactor, protocol
@@ -72,7 +74,7 @@ def sniffer_packet_handler(packet):
         protocol = "SMTP"
     else:
         protocol = "Unknown"
-    
+
     if VERBOSE:
         print "[*] Redirecting traffic from %s:%s to our local proxy" % (destination_ip, destination_port)
 
@@ -116,7 +118,7 @@ def main():
     pcap_filter = HTTP_PCAP_FILTER
     if VERBOSE:
         print "[*] Starting sniffer with PCAP filter: '" + pcap_filter + "'"
-    
+
     start_sniffer(interface, pcap_filter)
 
 if __name__ == '__main__':
