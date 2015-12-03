@@ -35,10 +35,12 @@ REMOTEHOST = "www.whatever.io"
 VERBOSE = True
 ERROR = -1
 
+
 def server_receive_data_generic(self, data):
     if VERBOSE:
         print "S->C: %r" % data
     portforward.Proxy.dataReceived(self, data)
+
 
 def client_receive_data_generic(self, data):
     if VERBOSE:
@@ -91,6 +93,7 @@ def connection_lost(self, reason):
         reactor.stop()
         #reactor.crash()
 
+
 def start_proxy(local_port, remote_host, remote_port, protocol):
     if protocol == "SMTP":
         portforward.ProxyServer.dataReceived = server_receive_data_generic
@@ -105,13 +108,21 @@ def start_proxy(local_port, remote_host, remote_port, protocol):
     portforward.ProxyServer.connectionLost = connection_lost
     #portforward.ProxyClient.connectionLost = connection_lost
 
-    reactor.listenTCP(local_port, portforward.ProxyFactory(remote_host, remote_port))
+    reactor.listenTCP(
+        local_port,
+        portforward.ProxyFactory(
+            remote_host,
+            remote_port))
     reactor.run()
 
 
 def start_sniffer(interface, pcap_filter):
     try:
-        sniffer = sniff(iface=interface, filter=pcap_filter, prn=sniffer_packet_handler, count=1000)
+        sniffer = sniff(
+            iface=interface,
+            filter=pcap_filter,
+            prn=sniffer_packet_handler,
+            count=1000)
     except Exception as err:
         print "[!] Error: " + str(err)
 
