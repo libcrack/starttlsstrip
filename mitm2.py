@@ -1,8 +1,11 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python2
+# -*- coding: UTF-8 -*-
+# Author: borja@libcrack.so
+# Date: Thu dic  3 02:05:07 CET 2015
 
 import sys
 import time
+
 try:
     from twisted.protocols import portforward
     from twisted.internet import reactor, protocol
@@ -32,7 +35,6 @@ REMOTEHOST = "www.whatever.io"
 VERBOSE = True
 ERROR = -1
 
-
 def server_receive_data_generic(self, data):
     if VERBOSE:
         print "S->C: %r" % data
@@ -48,8 +50,6 @@ def client_receive_data_generic(self, data):
 '''
 Methods for proxying SMTP and IMAP
 '''
-
-
 def client_receive_data_smtp(self, data):
     if "250-STARTTLS" in data:
         data = data.replace("250-STARTTLS", "")
