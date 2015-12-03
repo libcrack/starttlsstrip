@@ -1,4 +1,7 @@
-#!/usr/bin/python2
+#!/usr/bin/env python2
+# -*- coding: UTF-8 -*-
+# Author: borja@libcrack.so
+# Date: Thu dic  3 02:05:07 CET 2015
 
 import sys
 import time
