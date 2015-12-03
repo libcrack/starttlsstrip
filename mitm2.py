@@ -91,7 +91,8 @@ def connection_lost(self, reason):
         print "[*] Shutting down proxy..."
     if reactor.running:
         reactor.stop()
-        #reactor.crash()
+        # reactor.crash()
+
 
 
 def start_proxy(local_port, remote_host, remote_port, protocol):
