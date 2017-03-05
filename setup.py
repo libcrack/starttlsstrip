@@ -26,7 +26,7 @@ DESCRIPTION = 'SSL strip  implementation supporting StartTLS.'
 KEYWORDS = 'starttls strip sniff mitm'
 AUTHOR = 'JCF & BRC'
 AUTHOR_EMAIL = 'devnull@libcrack.so'
-URL = 'https://www.github.com/borjiviri/starttlsstrip'
+URL = 'https://www.github.com/libcrack/starttlsstrip'
 LICENSE = read('LICENSE')
 #PACKAGES = find_packages(exclude=['tests', 'tests.*'])
 PACKAGES = [NAME]
